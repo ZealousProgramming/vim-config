@@ -31,6 +31,10 @@ call plug#begin("~/.local/share/nvim/plugged")
 	Plug 'jcherven/jummidark.vim'
 	Plug 'kamykn/dark-theme.vim'
 	Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
+	Plug 'sainnhe/edge'
+	Plug 'pineapplegiant/spaceduck', { 'branch': 'main' }
+	Plug 'iojani/silenthill.vim'
+	Plug 'flrnd/candid.vim'
 "Third Partys
 	Plug 'junegunn/fzf', {'do': {-> fzf#install() } }
 	Plug 'junegunn/fzf.vim'
@@ -38,6 +42,11 @@ call plug#begin("~/.local/share/nvim/plugged")
 	Plug 'cdelledonne/vim-cmake'
 	Plug 'itchyny/lightline.vim'
 "Language specific
+	"C++
+	Plug 'jackguo380/vim-lsp-cxx-highlight'
+	Plug 'cdelledonne/vim-cmake'
+	Plug 'antoinemadec/FixCursorHold.nvim'
+
 	Plug 'OmniSharp/omnisharp-vim'
 	Plug 'habamax/vim-godot'
 
@@ -48,6 +57,12 @@ call plug#begin("~/.local/share/nvim/plugged")
 
 call plug#end()
 
+" CMake
+let g:cmake_link_compile_commands = 1
+
+
+" Prevents terminal from suspending
+nmap <C-z> <Nop>
 
 "Goyo
 let g:goyo_height = '100%'
@@ -61,7 +76,8 @@ endif
 let g:gruvbox_invert_selection='0'
 
 "colorscheme togglebit
-colorscheme gruvbox
+"colorscheme gruvbox
+colorscheme mountaineer-grey
 set background=dark
 "colorscheme anderson
 "colorscheme carbonized-dark
@@ -100,9 +116,16 @@ nnoremap <leader>dark :colorscheme darktheme<CR>
 nnoremap <leader>mt :colorscheme mountaineer-grey<CR>
 nnoremap <leader>tb :colorscheme togglebit<CR>
 nnoremap <leader>deep :colorscheme challenger_deep<CR>
+nnoremap <leader>zn :colorscheme zenburn<CR>
+nnoremap <leader>edge :colorscheme edge<CR>
+nnoremap <leader>spd :colorscheme spaceduck<CR>
+nnoremap <leader>shill :colorscheme silenthill<CR>
+nnoremap <leader>vrc :so $vrc<CR>
+nnoremap <leader>cand :colorscheme candid<CR>
 
 "let g:lightline = {'colorscheme': 'challenger_deep'}
 let g:lightline = {'colorscheme' : 'wombat'}
+"let g:lightline = {'colorscheme' : 'spaceduck'}
 "let g:lightline = {'colorscheme' : 'seoul256'}
 
 "resize
