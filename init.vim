@@ -40,6 +40,10 @@ call plug#begin("~/.local/share/nvim/plugged")
 	Plug 'ghifarit53/tokyonight-vim'
 	Plug 'owozsh/amora'
 	Plug 'Lokaltog/vim-monotone'
+	Plug 'jacoborus/tender.vim'
+	Plug 'nikolvs/vim-sunbather'
+	Plug 'AlessandroYorba/Sierra'
+	Plug 'AlessandroYorba/Despacio'
 "Third Partys
 	Plug 'junegunn/fzf', {'do': {-> fzf#install() } }
 	Plug 'junegunn/fzf.vim'
@@ -49,8 +53,11 @@ call plug#begin("~/.local/share/nvim/plugged")
 	Plug 'junegunn/goyo.vim'
 	Plug 'romgrk/barbar.nvim'
 "Language specific
+	"C
+	Plug 'vim-scripts/c.vim'
 	"C++
 	Plug 'jackguo380/vim-lsp-cxx-highlight'
+	"Plug 'https://github.com/bfrg/vim-cpp-modern'
 	Plug 'cdelledonne/vim-cmake'
 	Plug 'antoinemadec/FixCursorHold.nvim'
 	"C#
@@ -174,6 +181,10 @@ nnoremap <leader>badwolf :colorscheme badwolf<CR>
 nnoremap <leader>tokyo :colorscheme tokyonight<CR>
 nnoremap <leader>amora :colorscheme amora<CR>
 nnoremap <leader>mono :colorscheme monotone<CR>
+nnoremap <leader>tender :colorscheme tender<CR>
+nnoremap <leader>sunbath :colorscheme sunbather<CR>
+nnoremap <leader>sierra :colorscheme sierra<CR>
+nnoremap <leader>despa :colorscheme despacio<CR>
 
 
 "--------------------------------------------
@@ -189,7 +200,7 @@ nnoremap <silent>	<C-PageDown> :BufferMovePrevious<CR>
 nnoremap <silent>	<C-PageUp> :BufferMoveNext<CR>
 
 let bufferline = get(g:, 'bufferline', {})
-let bufferline.closeable = v:false
+let bufferline.closable = v:false
 let bufferline.clickable = v:false
 let bufferline.icons = v:false
 let bufferline.icon_custom_colors = v:false
@@ -339,10 +350,10 @@ autocmd! BufNewFile,BufRead *.vs,*.fs set ft=glsl
 " ------------------------------------------------------
 "	C++	
 " ------------------------------------------------------
-let g:cpp_class_scope_highlight = 1
-let g:cpp_member_variable_highlight = 1
-let g:cpp_class_decl_highlight = 1
-
+" let g:cpp_function_highlight = 1
+" let g:cpp_attributes_highlight = 1
+" let g:cpp_member_highlight = 1
+" let g:cpp_simple_highlight = 1
 
 
 
