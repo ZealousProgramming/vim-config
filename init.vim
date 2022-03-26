@@ -1,5 +1,6 @@
 syntax on
 
+set noswapfile
 set tabstop=4 softtabstop=4
 set shiftwidth=4
 set termguicolors
@@ -10,6 +11,7 @@ set cmdheight=4
 set updatetime=50
 set foldmethod=indent
 set foldenable
+set foldlevel=99
 set foldlevelstart=10
 set foldnestmax=10
 set nofoldenable
@@ -18,6 +20,7 @@ set signcolumn=yes
 set hidden
 set colorcolumn=110
 highlight ColorColumn ctermbg=0 guibg=lightgrey
+"highlight ColorColumn ctermbg=NONE guibg=NONE
 
 
 call plug#begin("~/.local/share/nvim/plugged")
@@ -28,7 +31,7 @@ call plug#begin("~/.local/share/nvim/plugged")
 	Plug 'gilgigilgil/anderson.vim'
 	Plug 'nightsense/carbonized'
 	Plug 'franbach/miramare'
-	Plug 'jcherven/jummidark.vim'
+	"Plug 'jcherven/jummidark.vim'
 	Plug 'kamykn/dark-theme.vim'
 	Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
 	Plug 'sainnhe/edge'
@@ -44,14 +47,24 @@ call plug#begin("~/.local/share/nvim/plugged")
 	Plug 'nikolvs/vim-sunbather'
 	Plug 'AlessandroYorba/Sierra'
 	Plug 'AlessandroYorba/Despacio'
+	Plug 'AhmedAbdulrahman/vim-aylin'
+	Plug 'matsuuu/pinkmare'
 "Third Partys
-	Plug 'junegunn/fzf', {'do': {-> fzf#install() } }
-	Plug 'junegunn/fzf.vim'
+	"Plug 'junegunn/fzf', {'do': {-> fzf#install() } }
+	"Plug 'junegunn/fzf.vim'
+	Plug 'kyazdani42/nvim-web-devicons' " for file icons
+	Plug 'kyazdani42/nvim-tree.lua'
+	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+	Plug 'nvim-lua/plenary.nvim'
+	Plug 'nvim-telescope/telescope.nvim'
+	Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+
 	Plug 'neoclide/coc.nvim', {'branch': 'release'}
 	Plug 'cdelledonne/vim-cmake'
 	Plug 'itchyny/lightline.vim'
 	Plug 'junegunn/goyo.vim'
 	Plug 'romgrk/barbar.nvim'
+	" Plug 'dense-analysis/ale'
 "Language specific
 	"C
 	Plug 'vim-scripts/c.vim'
@@ -69,12 +82,38 @@ call plug#begin("~/.local/share/nvim/plugged")
 	Plug 'rhysd/rust-doc.vim'
 	"Zig
 	Plug 'ziglang/zig.vim'
+	"Python
+	Plug 'vim-scripts/indentpython.vim'
+	Plug 'nvie/vim-flake8'
+	Plug 'vim-syntastic/syntastic'
 	"GLSL
 	Plug 'tikhomirov/vim-glsl'
 	"Markdown
-	Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#utils#install() }, 'for': ['markdown', 'vim-plug']}
-	Plug 'plasticboy/vim-markdown'
+	Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+	"Plug 'plasticboy/vim-markdown'
 call plug#end()
+
+" ------------------------------------------------------
+"	Requireds
+" ------------------------------------------------------
+lua require 'nvim-tree'.setup{}
+
+" ------------------------------------------------------
+"	Transparent
+" ------------------------------------------------------
+let t:is_transparent = 0
+
+function! Toggle_transparent_back()
+	if t:is_transparent == 0
+		let t:is_transparent = 1
+		hi Normal guibg=#111111 ctermbg=black
+		set background=dark
+	else
+		let t:is_transparent = 0
+		hi Normal guibg=NONE ctermbg=NONE
+	endif
+endfunction
+
 
 " ------------------------------------------------------
 "	Gruvbox
@@ -110,16 +149,7 @@ if exists('+termguicolors')
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
-"colorscheme togglebit
-"colorscheme gruvbox
-"colorscheme tokyonight
-colorscheme amora
-"colorscheme mountaineer-grey
-"set background=dark
-"colorscheme anderson
-"colorscheme carbonized-dark
-"colorscheme jummidark
-"colorscheme darktheme
+colorscheme pinkmare
 
 "let g:lightline = {'colorscheme': 'challenger_deep'}
 let g:lightline = {'colorscheme' : 'wombat'}
@@ -143,6 +173,35 @@ map <leader>p :GFiles --cached --others --exclude-standard<CR>
 "map <C-f> :Files<CR>
 "map <leader>j :Files<CR>
 "map <leader>b :Buffers<CR>
+
+" --------------
+" - Move Lines -
+" --------------
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+inoremap <A-j> <Esc> :m .+1<CR>==gi
+inoremap <A-k> <Esc> :m .-2<CR>==gi
+
+
+" -------------
+" - Telescope -
+" -------------
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+" Using Lua functions
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+
+nnoremap <C-n> :NvimTreeToggle<CR>
+nnoremap <leader>r :NvimTreeRefresh<CR>
+nnoremap <leader>n :NvimTreeFindFile<CR>
+
 map <leader><C-s> :wa<CR>
 nmap <leader>gd <Plug>(coc-definition)
 nmap <leader>gr <Plug>(coc-references)
@@ -158,13 +217,23 @@ inoremap <expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 " Prevents terminal from suspending
 nmap <C-z> <Nop>
+
+" Toggle transparency
+nnoremap <C-F12> :call Toggle_transparent_back()<CR>
+
+" Godot
+nnoremap <F5> :GodotRun<CR>
+
+" Rust
+nnoremap <F3> :CocCommand rust-analyzer.openDocs<CR>
+
 " Theme bindings
-nnoremap <leader>gbod :colorscheme gruvbox<bar>:set background=dark<CR>
-nnoremap <leader>gbol :colorscheme gruvbox<bar>:set background=light<CR>
+nnoremap <leader>gbx :colorscheme gruvbox<bar>:set background=dark<CR>
+nnoremap <leader>gbl :colorscheme gruvbox<bar>:set background=light<CR>
 nnoremap <leader>and :colorscheme anderson<bar>:set background=dark<CR>
 nnoremap <leader>carb :colorscheme carbonized-dark<bar>:set background=dark<CR>
 nnoremap <leader>mira :colorscheme miramare<bar>:set background=dark<CR>
-nnoremap <leader>jum :colorscheme jummidark<bar>:set background=dark<CR>
+"nnoremap <leader>jum :colorscheme jummidark<bar>:set background=dark<CR>
 nnoremap <leader>cst :colorscheme coolsteel<CR>
 nnoremap <leader>dark :colorscheme darktheme<CR>
 nnoremap <leader>mt :colorscheme mountaineer-grey<CR>
@@ -185,6 +254,8 @@ nnoremap <leader>tender :colorscheme tender<CR>
 nnoremap <leader>sunbath :colorscheme sunbather<CR>
 nnoremap <leader>sierra :colorscheme sierra<CR>
 nnoremap <leader>despa :colorscheme despacio<CR>
+nnoremap <leader>aylin :colorscheme aylin<CR>
+nnoremap <leader>pnk :colorscheme pinkmare<CR>
 
 
 "--------------------------------------------
@@ -279,7 +350,7 @@ let g:mkdp_open_ip = ''
 "
 " " specify browser to open preview page
 " " default: ''
-let g:mkdp_browser = ''
+let g:mkdp_browser = 'firefox'
 "
 " " set to 1, echo preview page url in command line when open preview page
 " " default is 0
@@ -355,5 +426,51 @@ autocmd! BufNewFile,BufRead *.vs,*.fs set ft=glsl
 " let g:cpp_member_highlight = 1
 " let g:cpp_simple_highlight = 1
 
+" ------------------------------------------------------
+"  ALE
+" ------------------------------------------------------
+let g:ale_linters = {'python': 'all'}
+let g:ale_fixers = {'python': ['isort', 'yapf', 'remove_trailing_lines', 'trim_whitespace']}
+let g:ale_lsp_suggestions = 1
+let g:ale_fix_on_save = 1
+let g:ale_go_gofmt_options = '-s'
+let g:ale_go_gometalinter_options = '— enable=gosimple — enable=staticcheck'
+let g:ale_completion_enabled = 1
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] [%severity%] %code: %%s'
 
+" ------------------------------------------------------
+"  Python
+" ------------------------------------------------------
+let python_highlight_all=1
+
+" ------------------------------------------------------
+"  Godot
+" ------------------------------------------------------
+let g:godot_executable = 'D:/Programming/Godot/Godot_v3.4-stable_mono_win64/Godot_v3.4-stable_mono_win64.exe'
+
+" ------------------------------------------------------
+"  Nvim-Tree keys
+" ------------------------------------------------------
+" <CR> o		- edit
+" <C-]>			- cd
+" dir_up		- -
+" <C-v>			- vsplit
+" <C-x>			- split
+" <C-t>			- tabnew
+" <C-t>			- tabnew
+" Shift <		- prev_sibling
+" Shift >		- next_sibling
+" R				- refresh
+" a				- create
+" d				- remove
+" r				- rename
+" <C-r>			- full_rename
+" x				- cut
+" c				- copy
+" p				- paste
+" y				- copy_name
+" Y				- copy_path
+" gy			- copy_absolute_path
 
